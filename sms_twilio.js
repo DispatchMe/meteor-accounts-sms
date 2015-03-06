@@ -1,6 +1,6 @@
 var sms = Accounts.sms.twilio = {};
 
-var Twilio = new Npm.require('Twilio');
+var Twilio = new Npm.require('twilio');
 
 /**
  * Configure the twilio sms client.
@@ -14,7 +14,7 @@ sms.configure = function (options) {
   sms.from = options.from;
 };
 
-var codes = new Meteor.Collection('accounts-sms.codes');
+var codes = new Meteor.Collection('meteor_accounts_sms');
 
 /**
  * Send a 4 digit verification sms with twilio.

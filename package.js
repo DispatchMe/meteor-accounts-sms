@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Npm.depends({
-  twilio: '1.11.0'
+  twilio: '1.11.1'
 });
 
 Package.onUse(function (api) {
