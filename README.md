@@ -30,8 +30,3 @@ Meteor.sendVerificationCode('+12222222222');
 // Login with the verification code sms.
 Meteor.loginWithSms('+12222222222', '2222');
 ```
-
-```
-// Lookup a phone number
-Meteor.lookup('+12222222222');
-```
