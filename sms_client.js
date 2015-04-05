@@ -15,15 +15,6 @@ Meteor.loginWithSms = function (phone, code, callback) {
 };
 
 /**
- * Lookup phone number information through twilio lookups api.
- * @param phone
- * @param [callback]
- */
-Meteor.lookup = function (phone, callback) {
-  Meteor.call('accounts-sms.lookup', phone, callback);
-};
-
-/**
  * Request a verification code.
  * @param phone The phone number to verify.
  * @param [callback]

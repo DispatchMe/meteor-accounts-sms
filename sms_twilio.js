@@ -33,6 +33,14 @@ sms.lookup = function (phone) {
     }
   });
 
+  check(response.data, {
+    country_code: String,
+    phone_number: String,
+    national_format: String,
+    url: String,
+    carrier: Object
+  });
+
   lookups.insert(_.extend(response.data, { timestamp: new Date() }));
 
   return response.data;
@@ -47,7 +55,7 @@ var codes = new Meteor.Collection('meteor_accounts_sms');
 sms.sendVerificationCode = function (phone) {
   var lookup = sms.lookup(phone);
 
-  if (lookup.carrier.type !== 'mobile') return false;
+  if (lookup.carrier.type !== 'mobile') throw new Meteor.Error('Not a mobile number');
 
   var code = Math.floor(Random.fraction() * 10000) + '';
 
@@ -65,8 +73,6 @@ sms.sendVerificationCode = function (phone) {
     // TODO handle errors better
     if (error) throw error;
   });
-
-  return true;
 };
 
 /**

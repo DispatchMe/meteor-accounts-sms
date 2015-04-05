@@ -32,7 +32,7 @@ Accounts.sms.configure = function (options) {
     {
       twilio: { from: String, sid: String, token: String }
     }, {
-      sendDownloadLink: MatchEx.Function(),
+      lookup: MatchEx.Function(),
       sendVerificationCode: MatchEx.Function(),
       verifyCode: MatchEx.Function()
     }
@@ -52,11 +52,6 @@ Accounts.sms.configure = function (options) {
 };
 
 Meteor.methods({
-  'accounts-sms.lookup': function (phone) {
-    check(phone, String);
-
-    return Accounts.sms.lookup(phone);
-  },
   'accounts-sms.sendVerificationCode': function (phone) {
     check(phone, String);
 
