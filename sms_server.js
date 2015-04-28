@@ -61,7 +61,11 @@ Meteor.methods({
 
 // Handler to login with a phone number and code.
 Accounts.registerLoginHandler('sms', function (options) {
+  if (!options.sms)
+    return;
+
   check(options, {
+    sms: true,
     phone: MatchEx.String(1),
     code: MatchEx.String(1)
   });
