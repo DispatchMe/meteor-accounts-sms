@@ -7,6 +7,7 @@
 Meteor.loginWithSms = function (phone, code, callback) {
   Accounts.callLoginMethod({
     methodArguments: [{
+      sms: true,
       phone: phone,
       code: code
     }],

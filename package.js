@@ -12,7 +12,7 @@ Npm.depends({
 Package.onUse(function (api) {
   api.versionsFrom('1.0');
 
-  api.use(['accounts-base', 'check'], ['client', 'server']);
+  api.use(['accounts-base', 'check', 'http', 'underscore'], ['client', 'server']);
   // Export Accounts (etc) to packages using this one.
   api.imply('accounts-base', ['client', 'server']);
 

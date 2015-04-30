@@ -1,5 +1,9 @@
 var sms = Accounts.sms;
 
+sms.lookup = function () {
+  throw new Error('Accounts sms has not been configured yet.');
+};
+
 sms.sendVerificationCode = function () {
   throw new Error('Accounts sms has not been configured yet.');
 };
@@ -25,15 +29,23 @@ sms.verifyCode = function () {
  */
 Accounts.sms.configure = function (options) {
   check(options, Match.OneOf(
-    {twilio: {from: String, sid: String, token: String}},
-    {sendVerificationCode: MatchEx.Function(), verifyCode: MatchEx.Function()}
+    {
+      twilio: { from: String, sid: String, token: String }
+    }, {
+      lookup: MatchEx.Function(),
+      sendVerificationCode: MatchEx.Function(),
+      verifyCode: MatchEx.Function()
+    }
   ));
 
   if (options.twilio) {
     sms.twilio.configure(options.twilio);
+
+    sms.lookup = sms.twilio.lookup;
     sms.sendVerificationCode = sms.twilio.sendVerificationCode;
     sms.verifyCode = sms.twilio.verifyCode;
   } else {
+    sms.lookup = options.lookup;
     sms.sendVerificationCode = options.sendVerificationCode;
     sms.verifyCode = options.verifyCode;
   }
@@ -43,13 +55,17 @@ Meteor.methods({
   'accounts-sms.sendVerificationCode': function (phone) {
     check(phone, String);
 
-    Accounts.sms.sendVerificationCode(phone);
+    return Accounts.sms.sendVerificationCode(phone);
   }
 });
 
 // Handler to login with a phone number and code.
 Accounts.registerLoginHandler('sms', function (options) {
+  if (!options.sms)
+    return;
+
   check(options, {
+    sms: true,
     phone: MatchEx.String(1),
     code: MatchEx.String(1)
   });
