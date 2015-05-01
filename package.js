@@ -1,12 +1,8 @@
 Package.describe({
   name: 'dispatch:accounts-sms',
-  version: '0.0.1-wip',
+  version: '0.0.2-wip',
   summary: 'Allow users to login with their phone number.',
   git: 'https://github.com/DispatchMe/meteor-accounts-sms.git'
-});
-
-Npm.depends({
-  twilio: '1.11.1'
 });
 
 Package.onUse(function (api) {
