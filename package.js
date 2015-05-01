@@ -21,7 +21,7 @@ Package.onUse(function (api) {
   api.use([
     'accounts-base',
     'check',
-    'dispatch:twilio',
+    'dispatch:twilio@1.0.1',
     'dispatch:phoneformat.js'
   ], ['client', 'server']);
 
