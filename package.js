@@ -1,6 +1,6 @@
 Package.describe({
   name: 'dispatch:accounts-sms',
-  version: '0.0.2-wip',
+  version: '1.0.0',
   summary: 'Allow users to login with their phone number.',
   git: 'https://github.com/DispatchMe/meteor-accounts-sms.git'
 });
@@ -17,8 +17,7 @@ Package.onUse(function (api) {
   api.use([
     'accounts-base',
     'check',
-    'dispatch:twilio@1.0.1',
-    'dispatch:phoneformat.js'
+    'dispatch:twilio@1.0.1'
   ], ['client', 'server']);
 
   // Export Accounts (etc) to packages using this one.

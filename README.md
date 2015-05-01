@@ -1,6 +1,6 @@
 accounts-sms
 =============
-Allow users to login with their phone number. **WIP -- use at your own risk.**
+Allow users to login with their phone number.
 
 ##Usage
 
