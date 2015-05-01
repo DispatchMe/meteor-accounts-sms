@@ -12,13 +12,24 @@ Npm.depends({
 Package.onUse(function (api) {
   api.versionsFrom('1.0');
 
-  api.use(['accounts-base', 'check', 'http', 'underscore'], ['client', 'server']);
+  api.use([
+    'random',
+    'jperl:match-ex@1.0.0',
+    'mongo'
+  ], 'server');
+
+  api.use([
+    'accounts-base',
+    'check',
+    'dispatch:twilio',
+    'dispatch:phoneformat.js'
+  ], ['client', 'server']);
+
   // Export Accounts (etc) to packages using this one.
   api.imply('accounts-base', ['client', 'server']);
 
-  api.use(['random', 'jperl:match-ex@1.0.0'], 'server');
-
   api.addFiles('sms.js', ['client', 'server']);
-  api.addFiles(['sms_twilio.js', 'sms_server.js'], 'server');
+
+  api.addFiles('sms_server.js', 'server');
   api.addFiles('sms_client.js', 'client');
 });
