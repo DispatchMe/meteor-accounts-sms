@@ -68,7 +68,9 @@ Accounts.sms.sendVerificationCode = function (phone) {
   if (!Accounts.sms.client) throw new Meteor.Error('accounts-sms has not been configured');
 
   var lookup = Accounts.sms.client.lookup(phone);
-  if (lookup.carrier.type !== 'mobile') throw new Meteor.Error('not a mobile number');
+  if (lookup.carrier && lookup.carrier.type !== 'mobile') {
+    throw new Meteor.Error('not a mobile number');
+  }
 
   var code = Math.floor(Random.fraction() * 10000) + '';
 
