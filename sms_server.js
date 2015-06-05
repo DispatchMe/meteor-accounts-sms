@@ -13,7 +13,7 @@ Accounts.registerLoginHandler('sms', function (options) {
   if (!options.sms) return;
 
   check(options, {
-    sms: true,
+    sms: Boolean,
     phone: MatchEx.String(1),
     code: MatchEx.String(1)
   });
@@ -72,16 +72,16 @@ Accounts.sms.sendVerificationCode = function (phone) {
     throw new Meteor.Error('not a mobile number');
   }
 
-  var code = Math.floor(Random.fraction() * 10000) + '';
+  var code = Math.floor(1000 + Math.random() * 9000) + '';
 
   // Clear out existing codes
-  codes.remove({phone: phone});
+  codes.remove({number: phone});
 
   // Generate a new code.
-  codes.insert({phone: phone, code: code});
+  codes.insert({number: lookup.phone_number, code: code});
 
   Accounts.sms.client.sendSMS({
-    to: phone,
+    to: lookup.phone_number,
     body: 'Your verification code is ' + code
   });
 };
@@ -92,13 +92,20 @@ Accounts.sms.sendVerificationCode = function (phone) {
  * @param code
  */
 Accounts.sms.verifyCode = function (phone, code) {
-  var user = Meteor.users.findOne({phone: phone});
+  var lookup = Accounts.sms.client.lookup(phone);
+  if (lookup && lookup.phone_number){
+    phone = lookup.phone_number;
+  } else {
+    throw new Meteor.Error("Couldn't normalize the phone");
+  };
+  console.log(phone);
+  var user = Meteor.users.findOne({number: phone});
   if (!user) throw new Meteor.Error('Invalid phone number');
 
-  var validCode = codes.findOne({phone: phone, code: code});
+  var validCode = codes.findOne({number: phone, code: code});
   if (!validCode) throw new Meteor.Error('Invalid verification code');
 
   // Clear the verification code after a succesful login.
-  codes.remove({phone: phone});
+  codes.remove({number: phone});
   return {userId: user._id};
 };
