@@ -13,7 +13,7 @@ Accounts.registerLoginHandler('sms', function (options) {
   if (!options.sms) return;
 
   check(options, {
-    sms: true,
+    sms: Boolean,
     phone: MatchEx.String(1),
     code: MatchEx.String(1)
   });
