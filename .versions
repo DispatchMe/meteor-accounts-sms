@@ -4,7 +4,6 @@ binary-heap@1.0.3
 callback-hook@1.0.3
 check@1.0.5
 ddp@1.1.0
-dispatch:accounts-sms@1.0.1
 dispatch:twilio@1.0.3
 ejson@1.0.6
 geojson-utils@1.0.3
@@ -22,5 +21,6 @@ random@1.0.3
 retry@1.0.3
 service-configuration@1.0.4
 tracker@1.0.7
+trever:accounts-sms@1.0.3
 underscore@1.0.3
 url@1.0.4

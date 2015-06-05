@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'dispatch:accounts-sms',
-  version: '1.0.1',
+  name: 'trever:accounts-sms',
+  version: '1.0.3',
   summary: 'Allow users to login with their phone number.',
-  git: 'https://github.com/DispatchMe/meteor-accounts-sms.git'
+  git: 'https://github.com/trever/meteor-accounts-sms.git'
 });
 
 Package.onUse(function (api) {
