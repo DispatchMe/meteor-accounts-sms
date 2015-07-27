@@ -13,7 +13,7 @@ Accounts.registerLoginHandler('sms', function (options) {
   if (!options.sms) return;
 
   check(options, {
-    sms: true,
+    sms: Boolean,
     phone: MatchEx.String(1),
     code: MatchEx.String(1)
   });
@@ -43,7 +43,8 @@ Accounts.sms.configure = function (options) {
         from: String,
         sid: String,
         token: String
-      }
+      },
+      message: Match.Optional(String)
     }, {
       lookup: MatchEx.Function(),
       sendVerificationCode: MatchEx.Function(),
@@ -58,6 +59,7 @@ Accounts.sms.configure = function (options) {
     Accounts.sms.sendVerificationCode = options.sendVerificationCode;
     Accounts.sms.verifyCode = options.verifyCode;
   }
+  Accounts.sms.message = options.message || 'Your verification code is {{code}}';
 };
 
 /**
@@ -73,16 +75,26 @@ Accounts.sms.sendVerificationCode = function (phone) {
   }
 
   var code = Math.floor(Random.fraction() * 10000) + '';
+  var message = Accounts.sms.message.replace(/{{code}}/g, code);
+
+  // Create user if does not exist
+  var user = Meteor.users.findOne({ phone: phone });
+  if (!user) {
+    Meteor.users.insert({
+      phone: phone,
+      createdAt: new Date()
+    });
+  }
 
   // Clear out existing codes
   codes.remove({phone: phone});
 
   // Generate a new code.
   codes.insert({phone: phone, code: code});
-
+  // console.log('sending sms.', phone, code);
   Accounts.sms.client.sendSMS({
     to: phone,
-    body: 'Your verification code is ' + code
+    body: message
   });
 };
 
@@ -92,7 +104,7 @@ Accounts.sms.sendVerificationCode = function (phone) {
  * @param code
  */
 Accounts.sms.verifyCode = function (phone, code) {
-  var user = Meteor.users.findOne({phone: phone});
+  var user = Meteor.users.findOne({ phone: phone });
   if (!user) throw new Meteor.Error('Invalid phone number');
 
   var validCode = codes.findOne({phone: phone, code: code});
