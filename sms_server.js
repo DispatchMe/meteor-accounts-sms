@@ -12,7 +12,6 @@ Meteor.methods({
 Accounts.registerLoginHandler('sms', function (options) {
   if (!options.sms) return;
 
-  console.log('login with sms.', options);
   check(options, {
     sms: Boolean,
     phone: MatchEx.String(1),
@@ -106,7 +105,6 @@ Accounts.sms.sendVerificationCode = function (phone) {
  */
 Accounts.sms.verifyCode = function (phone, code) {
   var user = Meteor.users.findOne({ phone: phone });
-  console.log('verifying code.', phone, code, user, Meteor.users.find().fetch());
   if (!user) throw new Meteor.Error('Invalid phone number');
 
   var validCode = codes.findOne({phone: phone, code: code});
