@@ -12,8 +12,9 @@ Meteor.methods({
 Accounts.registerLoginHandler('sms', function (options) {
   if (!options.sms) return;
 
+  console.log('login with sms.', options);
   check(options, {
-    sms: true,
+    sms: Boolean,
     phone: MatchEx.String(1),
     code: MatchEx.String(1)
   });
@@ -77,6 +78,15 @@ Accounts.sms.sendVerificationCode = function (phone) {
   var code = Math.floor(Random.fraction() * 10000) + '';
   var message = Accounts.sms.message.replace(/{{code}}/g, code);
 
+  // Create user if does not exist
+  var user = Meteor.users.findOne({ phone: phone });
+  if (!user) {
+    Meteor.users.insert({
+      phone: phone,
+      createdAt: new Date()
+    });
+  }
+
   // Clear out existing codes
   codes.remove({phone: phone});
 
@@ -95,7 +105,8 @@ Accounts.sms.sendVerificationCode = function (phone) {
  * @param code
  */
 Accounts.sms.verifyCode = function (phone, code) {
-  var user = Meteor.users.findOne({phone: phone});
+  var user = Meteor.users.findOne({ phone: phone });
+  console.log('verifying code.', phone, code, user, Meteor.users.find().fetch());
   if (!user) throw new Meteor.Error('Invalid phone number');
 
   var validCode = codes.findOne({phone: phone, code: code});
