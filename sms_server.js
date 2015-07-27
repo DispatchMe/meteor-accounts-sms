@@ -89,10 +89,6 @@ Accounts.sms.sendVerificationCode = function (phone) {
   });
 };
 
-Accounts.sms.getVerificationCodeMessage = function(code) {
-
-}
-
 /**
  * Send a 4 digit verification sms with twilio.
  * @param phone
