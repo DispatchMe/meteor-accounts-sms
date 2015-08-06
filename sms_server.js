@@ -65,7 +65,7 @@ Accounts.sms.configure = function (options) {
  * Send a 4 digit verification sms with twilio.
  * @param phone
  */
-Accounts.sms.sendVerificationCode = function (phone) {
+Accounts.sms.sendVerificationCode = function (phone, message) {
   if (!Accounts.sms.client) throw new Meteor.Error('accounts-sms has not been configured');
 
   var lookup = Accounts.sms.client.lookup(phone);
@@ -74,7 +74,9 @@ Accounts.sms.sendVerificationCode = function (phone) {
   }
 
   var code = (Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000) + '';
-  var message = Accounts.sms.message.replace(/{{code}}/g, code);
+
+  message = message || Accounts.sms.message;
+  message = message.replace(/{{code}}/g, code);
 
   // Create user if does not exist
   var user = Meteor.users.findOne({ phone: phone });
